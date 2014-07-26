@@ -17,15 +17,12 @@ import android.widget.*;
  * @author root
  */
 public class UserTab extends Fragment {
-    private long userID;
-    private String username;
-    private String email;
     @Override
     
     //Returns "inflaterview" view, 
         ///by inflating "test_tab" layout.
         ///and puting inflaterview in "container" viewgroup.
-    //Returns "textview" textview. 
+    //Creates "textview" textview. 
             ///by casting "inflaterView" view to textview
             ///and calling inflaterview.findbyviewid)
             ///using "tabtextview"
@@ -37,27 +34,4 @@ public class UserTab extends Fragment {
         textview.setText(R.string.User);
         return inflaterView;
     }
-	
-    public long getID() {
-            return userID;
-    }
-    public void setID(long id) {
-            this.userID=id;
-    }
-
-    public String getUsername() {
-            return username;
-    }
-    public void setUsername(String name) {
-            this.username=name;
-    }
-
-    public String getEmail() {
-            return email;
-    }
-    public void setEmail(String email) {
-            this.email=email;
-    }
-
-	    
 }

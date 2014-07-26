@@ -15,7 +15,7 @@ import android.view.*;
  *
  * @author Phil
  */
-public class ClosetActivity extends Activity {
+public class MainTabActivity extends Activity {
 
     /**
      * Called when the activity is first created.
