@@ -5,6 +5,7 @@
  */
 package ootd.com;
 import java.util.*;
+import android.util.*;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -28,6 +29,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             if (dbinstance == null) {
                     dbinstance = new MySQLiteHelper(context.getApplicationContext());
             }
+            Log.d("UserDAO","Instantiating MySQLiteOpenHelper="+dbinstance);
             return dbinstance;
     }
 
@@ -39,17 +41,21 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     /**********Table Definition: Hashmaps**********/
 
     //user table 
-    public static final HashMap<String,String> user = new HashMap<String,String>();
-    public static final String _user_table="user";
-    public static final String _userID="userID";
-    public static final String _username="username";
-    public static final String _email="email";
+    public static final LinkedHashMap<String,String> user = new LinkedHashMap<String,String>();
+    public static final String _user_table=" user";
+    public static final String _userID=" userID";
+    public static final String _username=" username";
+    public static final String _email=" email";
     public static final String[] user_cols = {_userID,_username,_email};
     static
     {
-            user.put(_userID, "integer primary key autoincrement,");
-            user.put(_username,"text not null,");
-            user.put(_email, "text");
+            user.put(_userID, " integer primary key autoincrement,");
+            user.put(_username," text not null,");
+            user.put(_email, " text not null");
+            
+            
+            
+            
     }
 //    //Outfit table
 //    public static final HashMap<String,String> outfit = new HashMap<String,String>();
@@ -163,12 +169,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     /**********Functions**********/
 
     //create "create table" statement
-    public String createTableSQL(HashMap<String,String> col,String table){
-            String table_create=null;
+    public String createTableSQL(LinkedHashMap<String,String> col,String table){
+            String table_create ="create table" +table+"(";
             for (String key : col.keySet()) {
                     table_create+=key+col.get(key);
             }
-            table_create=("create table"+table+"("+table_create+");");
+            table_create= table_create + ");";
+            Log.d("UserDAO","Creating table: "+table_create);
             return table_create;
     }
 
@@ -177,7 +184,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     //create all tables, only run if db does not currently exist
     @Override
     public void onCreate(SQLiteDatabase database) {
-            database.execSQL(createTableSQL(user,"user"));
+        Log.d("UserDAO","Executing create table statement");
+            database.execSQL(createTableSQL(user,_user_table));
             //database.execSQL(createTableSQL(outfit,"outfit"));
             //database.execSQL(createTableSQL(closet,"closet"));
             // TODO Auto-generated method stub

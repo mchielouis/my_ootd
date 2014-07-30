@@ -13,7 +13,7 @@ import android.view.*;
 
 /**
  *
- * @author Phil
+ * C:\Users\Michelle\Documents\NetBeansProjects\my_ootd\bin\my_ootd-debug.apk
  */
 public class MainTabActivity extends Activity {
 

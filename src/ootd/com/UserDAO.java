@@ -16,6 +16,7 @@ import android.database.*;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteCursor;
+import android.util.*;
 /**
  *
  * @author root
@@ -27,7 +28,7 @@ public class UserDAO {
     private MySQLiteHelper dbhelper;
 
 //doa objects
-    private UserObject currentuser;
+    private User currentuser;
 
 //constructor, calls static method getInstance of MySQLiteHelper
     //public UserDAO() {}
@@ -44,19 +45,19 @@ public class UserDAO {
             dbhelper.close();
     }
 //get current user-psuedo sessionID for now
-    public UserObject getUser() {
+    public User getUser() {
             return this.currentuser;
     }
 //set current user, restricted to UserDAO functionality
-    private void setUser(UserObject user) {
+    private void setUser(User user) {
             this.currentuser=user;
     }
 
 //create a User object instance 
     //from cursor elements
     //by setting user members 
-    public UserObject createUser(Cursor cursor) {
-            UserObject user= new UserObject();
+    public User createUser(Cursor cursor) {
+            User user= new User();
             user.setID(cursor.getLong(0));
             user.setUsername(cursor.getString(1));
             user.setEmail(cursor.getString(2));
@@ -64,9 +65,9 @@ public class UserDAO {
     }
 
 //retrieve all User Object instances saved on device
-    public List<UserObject> selectAllUsers() {
+    public ArrayList<User> selectAllUsers() {
             //create List to store users
-            List<UserObject> users = new ArrayList<UserObject>();
+            ArrayList<User> users = new ArrayList<User>();
             //perform select
             Cursor cursor = database.query(MySQLiteHelper._user_table, MySQLiteHelper.user_cols,null,null,null,null,null,null);
             //move cursor to first tuple
@@ -77,16 +78,17 @@ public class UserDAO {
                 ///shift cursor
            //close cursor, return User object list
             while (!cursor.isAfterLast()) {
-                    UserObject user = createUser(cursor);
+                    User user = createUser(cursor);
                     users.add(user);
                     cursor.moveToNext();
             }
             cursor.close();
+            Log.d("UserDAO","Selecting Users from user table. Cursor: "+cursor);
             return users;
     }
 
 //insert User object data into "_user_table"	
-    public UserObject insertUser(String username, String email) {
+    public User insertUser(String username, String email) {
             long insertID;
 
             //put data values into ContentValue class
@@ -100,53 +102,11 @@ public class UserDAO {
             //move cursor to user at insertID (returned from database.insert) and return
             Cursor cursor = database.query(MySQLiteHelper._user_table, MySQLiteHelper.user_cols,MySQLiteHelper._userID +"="+insertID,null,null,null,null,null);
             cursor.moveToFirst();
-            UserObject user = createUser(cursor);
+            User user = new User(cursor.getLong(0), cursor.getString(1), cursor.getString(2));
             cursor.close();
+            Log.d("UserDAO", "inserting User into user table. id: "+insertID+" username: "+username+" email: "+email);
             return user;
     }
 
-//create a Closet instance and set appropriately
-//    public ClosetTab createCloset(Cursor cursor) {
-//            ClosetTab closet = new ClosetTab();
-//            closet.setID(cursor.getLong(0));
-//            closet.setName(cursor.getString(1));
-//            closet.setUserID(cursor.getLong(2));
-//            return closet;
-//    }
-////insert closet into data table, given current user	
-//    public ClosetTab insertCloset(String closet_name, String userID) {
-//            long insertID;
-//
-//            //put data values into ContentValue class
-//            ContentValues con_val_pair = new ContentValues();
-//            con_val_pair.put(MySQLiteHelper._closet_name, closet_name);
-//            con_val_pair.put(MySQLiteHelper._userID, userID);
-//
-//            //call insert
-//            insertID=database.insert(MySQLiteHelper._closet_table, null, con_val_pair);
-//
-//            //move cursor to user just entered and return
-//            Cursor cursor = database.query(MySQLiteHelper._closet_table, MySQLiteHelper.closet_cols,MySQLiteHelper._closetID +"="+insertID,null,null,null,null,null);
-//            cursor.moveToFirst();
-//            ClosetTab closet = createCloset(cursor);
-//            cursor.close();
-//            return closet;
-//    }
-////retrieve all closets, given currentuser
-//    public List<ClosetTab> selectAllClosets() {
-//            //create List to store users
-//            List<ClosetTab> closets = new ArrayList<ClosetTab>();
-//            //perform select
-//            Cursor cursor = database.query(MySQLiteHelper._closet_table, MySQLiteHelper.closet_cols,MySQLiteHelper._userID + "="+this.currentuser.getID(),null,null,null,null,null);
-//            //move cursor to first tuple
-//            cursor.moveToFirst();
-//            while (!cursor.isAfterLast()) {
-//                    ClosetTab closet = createCloset(cursor);
-//                    closets.add(closet);
-//                    cursor.moveToNext();
-//            }
-//            cursor.close();
-//            return closets;
-//    }
 
 }

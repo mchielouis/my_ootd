@@ -10,10 +10,17 @@ package ootd.com;
  *
  * @author Michelle
  */
-public class UserObject {
+public class User {
     private long userID;
     private String username;
     private String email;
+    
+    public User(){}
+    public User(long _id, String _name, String _email) {
+        userID=_id;
+        username=_name;
+        email=_email;
+    }
     
     public long getID() {
             return userID;
