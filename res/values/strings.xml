@@ -21,5 +21,9 @@
     <string name="User">UserTab</string>
     <string name="Closet">ClosetTab</string>
     <string name="Garment">GarmentTab</string>
-    <string name="CreateGarment">CreateGarmentTab</string> 
+    <string name="CreateGarment">CreateGarmentTab</string>
+    
+    <string name="AddUser">Add User</string> 
+    <string name="EnterUser">Enter username</string>
+    
 </resources>

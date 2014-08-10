@@ -60,7 +60,6 @@ public class UserDAO {
             User user= new User();
             user.setID(cursor.getLong(0));
             user.setUsername(cursor.getString(1));
-            user.setEmail(cursor.getString(2));
             return user;
     }
 
@@ -88,13 +87,12 @@ public class UserDAO {
     }
 
 //insert User object data into "_user_table"	
-    public User insertUser(String username, String email) {
+    public User insertUser(String username) {
             long insertID;
 
             //put data values into ContentValue class
             ContentValues con_val_pair = new ContentValues();
             con_val_pair.put(MySQLiteHelper._username, username);
-            con_val_pair.put(MySQLiteHelper._email, email);
 
             //call insert
             insertID=database.insert(MySQLiteHelper._user_table, null, con_val_pair);
@@ -102,9 +100,9 @@ public class UserDAO {
             //move cursor to user at insertID (returned from database.insert) and return
             Cursor cursor = database.query(MySQLiteHelper._user_table, MySQLiteHelper.user_cols,MySQLiteHelper._userID +"="+insertID,null,null,null,null,null);
             cursor.moveToFirst();
-            User user = new User(cursor.getLong(0), cursor.getString(1), cursor.getString(2));
+            User user = new User(cursor.getLong(0), cursor.getString(1));
             cursor.close();
-            Log.d("UserDAO", "inserting User into user table. id: "+insertID+" username: "+username+" email: "+email);
+            Log.d("UserDAO", "inserting User into user table. id: "+insertID+" username: "+username);
             return user;
     }
 
