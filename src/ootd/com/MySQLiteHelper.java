@@ -45,13 +45,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String _user_table=" user";
     public static final String _userID=" userID";
     public static final String _username=" username";
-    public static final String _email=" email";
-    public static final String[] user_cols = {_userID,_username,_email};
+    public static final String[] user_cols = {_userID,_username};
     static
     {
             user.put(_userID, " integer primary key autoincrement,");
             user.put(_username," text not null,");
-            user.put(_email, " text not null");
             
             
             
