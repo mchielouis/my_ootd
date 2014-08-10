@@ -6,6 +6,8 @@
 
 package ootd.com;
 import android.app.Fragment;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
@@ -18,10 +20,10 @@ import java.util.*;
  */
 public class UserTab extends Fragment {
     ///test User Object
-    User testUser = new User(1, "michelle");
+    User testUser = new User(1, "michelle", "michelle.flanner@gmail");
     
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, 
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, 
             Bundle savedInstanceState) {
         Log.d("UserTab.java","inflating user_tab");
         View inflaterView = inflater.inflate(R.layout.user_tab, container, false);
@@ -29,7 +31,7 @@ public class UserTab extends Fragment {
         Log.d("UserDAO","opening usource connection");
         UserDAO u_source = new UserDAO(this.getActivity());
         u_source.open();
-        u_source.insertUser("michelle");
+        u_source.insertUser("michelle", "michelle.flanner@gmail");
         ///List container for user objects
         ArrayList<User> users = u_source.selectAllUsers();
         ///instantiate View representation for list of user objects, defined in user_tab.xml
@@ -37,14 +39,6 @@ public class UserTab extends Fragment {
         ///instantiate custom adapter to convert array to views and attach adapter to listview
         Log.d("UserTab.java","listview =" + listview);
         listview.setAdapter(new UserAdapter(this.getActivity(), users));
-        
-      
-        Button buttonAddUser = (Button)inflaterView.findViewById(R.id.ButtonAddUser);
-        buttonAddUser.setOnClickListener(new View.OnClickListener() {
-             public void onClick(View v) {
-                 PopUpEditText popup = new PopUpEditText(container,inflater);
-             }
-         });
         return inflaterView;
     }
 }

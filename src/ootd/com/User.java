@@ -13,11 +13,13 @@ package ootd.com;
 public class User {
     private long userID;
     private String username;
+    private String email;
     
     public User(){}
-    public User(long _id, String _name) {
+    public User(long _id, String _name, String _email) {
         userID=_id;
         username=_name;
+        email=_email;
     }
     
     public long getID() {
@@ -32,6 +34,13 @@ public class User {
     }
     public void setUsername(String name) {
             this.username=name;
+    }
+
+    public String getEmail() {
+            return email;
+    }
+    public void setEmail(String email) {
+            this.email=email;
     }
 
 }
