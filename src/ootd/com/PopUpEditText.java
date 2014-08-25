@@ -7,6 +7,7 @@
 package ootd.com;
 
 
+import android.os.Bundle;
 import android.view.*;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.*;
@@ -23,6 +24,13 @@ public class PopUpEditText {
     public PopUpEditText(ViewGroup container, LayoutInflater inflater){
         View popupView = inflater.inflate(R.layout.user_edittext_popup, container, false);
         popupEditText = new PopupWindow(popupView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+        buttonEditText = (Button)popupView.findViewById(R.id.ButtonEditText);
+        buttonEditText.setOnClickListener(new View.OnClickListener() {
+             public void onClick(View v) {
+                 //
+                 //
+             }
+         });
     }
     
 }

@@ -38,7 +38,7 @@ public class UserTab extends Fragment {
         Log.d("UserTab.java","listview =" + listview);
         listview.setAdapter(new UserAdapter(this.getActivity(), users));
         
-      
+        //button to open popupedittext
         Button buttonAddUser = (Button)inflaterView.findViewById(R.id.ButtonAddUser);
         buttonAddUser.setOnClickListener(new View.OnClickListener() {
              public void onClick(View v) {
