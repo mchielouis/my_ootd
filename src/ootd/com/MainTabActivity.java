@@ -10,7 +10,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.*;
-
+import android.widget.*;
 /**
  *
  * C:\Users\Michelle\Documents\NetBeansProjects\my_ootd\bin\my_ootd-debug.apk
@@ -20,7 +20,8 @@ public class MainTabActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
-    
+    TextView textviewMenuItemUsername;
+    Menu actionBarMenu;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,9 +29,31 @@ public class MainTabActivity extends Activity {
         // ToDo add your GUI initialization code here 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.main);
+        setupActionBar();
         
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        setMenu(menu);
+        MenuInflater menuinflater = getMenuInflater();
+        menuinflater.inflate(R.menu.action_bar_menu, menu);
+        textviewMenuItemUsername = (TextView) menu.findItem(R.id.ActionBarUsername).getActionView(); 
+        return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override 
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem textviewMenuItem = menu.findItem(R.id.ActionBarUsername);
+        textviewMenuItemUsername = (TextView) textviewMenuItem.getActionView();
+        return super.onPrepareOptionsMenu(menu);
+    }
+    
+    private void setupActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
         //Declare tabs in action bar
         ActionBar.Tab userTab, closetTab, garmentTab, createGarmentTab;
         
@@ -39,9 +62,7 @@ public class MainTabActivity extends Activity {
         Fragment fragmentCloset = new ClosetTab();
         Fragment fragmentGarment = new GarmentTab();
         Fragment fragmentCreateGarment = new CreateGarmentTab();
-        
-        
-        
+     
         //action bar tab indicators
         userTab = actionBar.newTab().setText("You");
         closetTab = actionBar.newTab().setText("Your Closets");
@@ -57,6 +78,17 @@ public class MainTabActivity extends Activity {
         actionBar.addTab(closetTab);
         actionBar.addTab(garmentTab);
         actionBar.addTab(createGarmentTab);
+    }
+    //sets menu item, for manipulating menu during runtime
+    private void setMenu(Menu menu) {
+        this.actionBarMenu = menu;
+    }
+    
+    //sets usernametextview, to be called during runtime
+    public void setMenuItem(String username) {
+        MenuItem menuItem = this.actionBarMenu.findItem(R.id.ActionBarUsername);
+        textviewMenuItemUsername = (TextView) menuItem.getActionView();
+        textviewMenuItemUsername.setText(username);
     }
 //http://www.linux.com/learn/tutorials/761642-android-app-development-for-beginners-navigation-with-tabs
 }

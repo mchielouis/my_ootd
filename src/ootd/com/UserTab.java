@@ -13,31 +13,34 @@ import android.widget.*;
 import android.util.*;
 import java.util.*;
 
+
 /**
  *
  * @author root
  */
 public class UserTab extends Fragment {
-    ///test User Object
-    User testUser = new User(1, "michelle");
     
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, 
             Bundle savedInstanceState) {
         Log.d("UserTab.java","inflating user_tab");
         View inflaterView = inflater.inflate(R.layout.user_tab, container, false);
+        
         ///open db connection in usource
         Log.d("UserDAO","opening usource connection");
-        UserDAO u_source = new UserDAO(this.getActivity());
+        final UserDAO u_source = new UserDAO(this.getActivity());
         u_source.open();
-        //u_source.insertUser("michelle");
+        
         ///List container for user objects
         ArrayList<User> users = u_source.selectAllUsers();
+        
         ///instantiate View representation for list of user objects, defined in user_tab.xml
         ListView listview = (ListView)inflaterView.findViewById(R.id.UserListView);
+        
         ///instantiate custom adapter to convert array to views and attach adapter to listview
         Log.d("UserTab.java","listview =" + listview);
-        listview.setAdapter(new UserAdapter(this.getActivity(), users));
+        final UserAdapter useradapter = new UserAdapter(this.getActivity(), users);
+        listview.setAdapter(useradapter);
         
         //button to open popupedittext
         Button buttonAddUser = (Button)inflaterView.findViewById(R.id.ButtonAddUser);
@@ -48,24 +51,41 @@ public class UserTab extends Fragment {
             {
                 Log.d("UserTab.java", "buttonAddUser clicked");
                 View popupView = getActivity().getLayoutInflater().inflate(R.layout.user_edittext_popup, (ViewGroup)getActivity().findViewById(R.id.popupEditText));
-                Log.d("PopUpEditText.java", "popupView =" + popupView);
-                PopupWindow popupEditText = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-                popupEditText.showAtLocation(getActivity().findViewById(R.id.ButtonAddUser), Gravity.CENTER, 0,0);
+                Log.d("UserTab.java", "popupView =" + popupView);
+                
+                //initialize popupWindow with popupView and set width and length to wrap content
+                //show popup at buttonAddUser, update
+                final PopupWindow popupEditText = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                popupEditText.showAsDropDown(getActivity().findViewById(R.id.ButtonAddUser));
                 popupEditText.update(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                
+                //button to send edittext to userdao for queryexistence check and insertion
+                //getText from editTextInPopUp
                 Button buttonEditText = (Button) popupView.findViewById(R.id.ButtonEditText);
-                EditText editTextInPopUp = (EditText) popupView.findViewById(R.id.editTextInPopUp);
+                final EditText editTextInPopUp = (EditText) popupView.findViewById(R.id.editTextInPopUp);
+                
+                
                 Log.d("UserTab.java", "buttonEditText =" + buttonEditText);
                 buttonEditText.setOnClickListener(new View.OnClickListener() 
                 {
                     public void onClick(View v) 
                     {
-                 //
-                        //
+                        //string from edittext 
+                        String _username = editTextInPopUp.getText().toString();
+                        //if string null, dismiss popup, else attempt insert
+                        if(_username == null) popupEditText.dismiss();
+                        else {
+                            Log.d("UserTab.java", "_username =" + _username);
+                            u_source.insertUser(_username);
+                            useradapter.update(u_source.selectAllUsers());
+                            popupEditText.dismiss();
+                        }
                     }
                 });
                 
             }
         });
+        
         return inflaterView;
     }
 }

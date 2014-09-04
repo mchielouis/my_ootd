@@ -89,21 +89,25 @@ public class UserDAO {
 //insert User object data into "_user_table"	
     public User insertUser(String username) {
             long insertID;
+            Cursor existenceChecker = database.query(MySQLiteHelper._user_table, MySQLiteHelper.user_cols,MySQLiteHelper._username + "=?",new String[] {username},null,null,null,null); 
+            if (existenceChecker.getCount() == 0) {
+                //put data values into ContentValue class
+                ContentValues con_val_pair = new ContentValues();
+                con_val_pair.put(MySQLiteHelper._username, username);
 
-            //put data values into ContentValue class
-            ContentValues con_val_pair = new ContentValues();
-            con_val_pair.put(MySQLiteHelper._username, username);
+                //call insert
+                insertID = database.insert(MySQLiteHelper._user_table, null, con_val_pair);
 
-            //call insert
-            insertID=database.insert(MySQLiteHelper._user_table, null, con_val_pair);
-
-            //move cursor to user at insertID (returned from database.insert) and return
-            Cursor cursor = database.query(MySQLiteHelper._user_table, MySQLiteHelper.user_cols,MySQLiteHelper._userID +"="+insertID,null,null,null,null,null);
-            cursor.moveToFirst();
-            User user = new User(cursor.getLong(0), cursor.getString(1));
-            cursor.close();
-            Log.d("UserDAO", "inserting User into user table. id: "+insertID+" username: "+username);
-            return user;
+                //move cursor to user at insertID (returned from database.insert) and return
+                Cursor cursor = database.query(MySQLiteHelper._user_table, MySQLiteHelper.user_cols, MySQLiteHelper._userID + "=" + insertID, null, null, null, null, null);
+                cursor.moveToFirst();
+                User user = new User(cursor.getLong(0), cursor.getString(1));
+                cursor.close();
+                Log.d("UserDAO", "inserting User into user table. id: " + insertID + " username: " + username);
+                return user;
+            } else {
+                return null;
+            }
     }
 
 

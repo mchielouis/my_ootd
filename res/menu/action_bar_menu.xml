@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item
+    android:id="@+id/TextviewUsername"
+    android:actionViewClass="android.widget.TextView"
+    android:title="User"
+    android:text=""
+    android:showAsAction="ifRoom"/>
+</menu>
