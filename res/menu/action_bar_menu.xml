@@ -3,8 +3,8 @@
     
     <item
     android:id="@+id/TextviewUsername"
-    android:actionViewClass="android.widget.TextView"
+    android:actionLayout="@layout/action_bar_username"
     android:title="User"
-    android:text=""
-    android:showAsAction="ifRoom"/>
+    android:showAsAction="ifRoom"
+    android:text="user"/>
 </menu>

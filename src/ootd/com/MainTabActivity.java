@@ -11,9 +11,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
+import android.util.*;
 /**
  *
- * C:\Users\Michelle\Documents\NetBeansProjects\my_ootd\bin\my_ootd-debug.apk
+ * C:\Users\Phil\Documents\NetBeansProjects\my_ootd\bin\my_ootd-debug.apk
  */
 public class MainTabActivity extends Activity {
 
@@ -22,6 +23,7 @@ public class MainTabActivity extends Activity {
      */
     TextView textviewMenuItemUsername;
     Menu actionBarMenu;
+    String currentUser = "User";
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,14 +40,17 @@ public class MainTabActivity extends Activity {
         setMenu(menu);
         MenuInflater menuinflater = getMenuInflater();
         menuinflater.inflate(R.menu.action_bar_menu, menu);
-        textviewMenuItemUsername = (TextView) menu.findItem(R.id.ActionBarUsername).getActionView(); 
+        View mview = (View) menu.findItem(R.id.TextviewUsername).getActionView();
+        textviewMenuItemUsername = (TextView) mview.findViewById(R.id.ActionBarUsername); 
+        textviewMenuItemUsername.setText(currentUser);
+        Log.d("MainTabActivity.java","textviewMenuUsername="+textviewMenuItemUsername.getText().toString());
         return super.onCreateOptionsMenu(menu);
     }
     
     @Override 
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem textviewMenuItem = menu.findItem(R.id.ActionBarUsername);
-        textviewMenuItemUsername = (TextView) textviewMenuItem.getActionView();
+        //MenuItem textviewMenuItem = menu.findItem(R.id.TextviewUsername);
+        //textviewMenuItemUsername = (TextView) textviewMenuItem.getActionView();
         return super.onPrepareOptionsMenu(menu);
     }
     
@@ -53,7 +58,7 @@ public class MainTabActivity extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
+        //actionBar.setDisplayShowTitleEnabled(false);
         //Declare tabs in action bar
         ActionBar.Tab userTab, closetTab, garmentTab, createGarmentTab;
         
@@ -86,9 +91,7 @@ public class MainTabActivity extends Activity {
     
     //sets usernametextview, to be called during runtime
     public void setMenuItem(String username) {
-        MenuItem menuItem = this.actionBarMenu.findItem(R.id.ActionBarUsername);
-        textviewMenuItemUsername = (TextView) menuItem.getActionView();
-        textviewMenuItemUsername.setText(username);
+        currentUser = username;
     }
 //http://www.linux.com/learn/tutorials/761642-android-app-development-for-beginners-navigation-with-tabs
 }

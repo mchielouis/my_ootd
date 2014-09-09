@@ -55,6 +55,7 @@ public class UserAdapter extends ArrayAdapter<User> {
         //make textview clickable
         username.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.d("MainTabActivity.java","calling setMenuItem");
                 ((MainTabActivity)context).setMenuItem(user.getUsername());
                 ((MainTabActivity)context).invalidateOptionsMenu();
             }

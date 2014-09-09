@@ -55,6 +55,18 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             
             
     }
+    
+    //type table
+    public static final LinkedHashMap<String,String> type = new LinkedHashMap<String,String>();
+    public static final String _type_table=" type";
+    public static final String _typeID=" typeID";
+    public static final String _type=" type";
+    public static final String[] type_cols = {_typeID,_type};
+    static
+    {
+        type.put(_typeID," integer primary key autoincrement,");
+        type.put(_type," text not null");
+    }
 //    //Outfit table
 //    public static final HashMap<String,String> outfit = new HashMap<String,String>();
 //    public static final String _outfit_table="outfit";
@@ -184,6 +196,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         Log.d("UserDAO","Executing create table statement");
             database.execSQL(createTableSQL(user,_user_table));
+            database.execSQL(createTableSQL(type,_type_table));
             //database.execSQL(createTableSQL(outfit,"outfit"));
             //database.execSQL(createTableSQL(closet,"closet"));
             // TODO Auto-generated method stub

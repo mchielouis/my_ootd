@@ -73,7 +73,8 @@ public class UserTab extends Fragment {
                         //string from edittext 
                         String _username = editTextInPopUp.getText().toString();
                         //if string null, dismiss popup, else attempt insert
-                        if(_username == null) popupEditText.dismiss();
+                        if(_username.trim().length() == 0) 
+                            popupEditText.dismiss();
                         else {
                             Log.d("UserTab.java", "_username =" + _username);
                             u_source.insertUser(_username);

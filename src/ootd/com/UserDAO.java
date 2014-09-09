@@ -90,7 +90,9 @@ public class UserDAO {
     public User insertUser(String username) {
             long insertID;
             Cursor existenceChecker = database.query(MySQLiteHelper._user_table, MySQLiteHelper.user_cols,MySQLiteHelper._username + "=?",new String[] {username},null,null,null,null); 
-            if (existenceChecker.getCount() == 0) {
+            if (username.trim().length()==0) 
+                return null;
+            else if (existenceChecker.getCount() == 0) {
                 //put data values into ContentValue class
                 ContentValues con_val_pair = new ContentValues();
                 con_val_pair.put(MySQLiteHelper._username, username);
