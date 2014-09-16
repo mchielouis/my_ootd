@@ -57,9 +57,7 @@ public class UserDAO {
     //from cursor elements
     //by setting user members 
     public User createUser(Cursor cursor) {
-            User user= new User();
-            user.setID(cursor.getLong(0));
-            user.setUsername(cursor.getString(1));
+            User user= new User(cursor.getLong(0),cursor.getString(1));
             return user;
     }
 

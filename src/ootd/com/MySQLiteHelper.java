@@ -49,11 +49,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     static
     {
             user.put(_userID, " integer primary key autoincrement,");
-            user.put(_username," text not null");
-            
-            
-            
-            
+            user.put(_username," text not null");         
     }
     
     //type table
