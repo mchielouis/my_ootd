@@ -41,7 +41,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     /**********Table Definition: Hashmaps**********/
 
     //user table 
-    public static final LinkedHashMap<String,String> user = new LinkedHashMap<String,String>();
+    public static DOM user = new DOM(" user", " user_ID", " username");
+    /*public static final LinkedHashMap<String,String> user = new LinkedHashMap<String,String>();
     public static final String _user_table=" user";
     public static final String _userID=" userID";
     public static final String _username=" username";
@@ -50,10 +51,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     {
             user.put(_userID, " integer primary key autoincrement,");
             user.put(_username," text not null");         
-    }
+    }*/
     
     //type table
-    public static final LinkedHashMap<String,String> type = new LinkedHashMap<String,String>();
+    public static DOM type = new DOM(" type", " type_ID", " type_name");
+    /*public static final LinkedHashMap<String,String> type = new LinkedHashMap<String,String>();
     public static final String _type_table=" type";
     public static final String _typeID=" typeID";
     public static final String _type=" type";
@@ -62,7 +64,69 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     {
         type.put(_typeID," integer primary key autoincrement,");
         type.put(_type," text not null");
+    }*/
+    
+    //color table
+    public static DOM color = new DOM(" color", " color_ID", " color_name");
+    
+    /*public static final HashMap<String,String> color = new HashMap<String,String>();
+    public static final String _color_table=" color";
+    public static final String _colorID=" colorID";
+    public static final String _color_name=" color_name";
+    public static final String[] color_cols = {_colorID,_color_name};
+    static
+    {
+    color.put(_colorID, " integer primary key autoincrement, ");
+    color.put(_color_name, " text not null");
+    }*/
+//    //garment has colors table
+//    public static final HashMap<String,String> garment_has_colors = new HashMap<String,String>();
+//    public static final String _gcolor_num="gcolor_num";
+//    public static final String _ghc_table="garment_has_colors";
+//    public static final String[] ghc_cols = {_gcolor_num,_colorID,_garmentID};
+//    static
+//    {
+//    garment_has_colors.put(_gcolor_num, "integer primary key autoincrement");
+//    garment_has_colors.put(_colorID,"integer not null");
+//    garment_has_colors.put(_garmentID, "integer not null");
+//    garment_has_colors.put("foreign key("+_garmentID+")", "references garment("+_garmentID+")");
+//    garment_has_colors.put("foreign key("+_colorID+")", "references color("+_colorID+")");
+//    }
+    //pattern table
+    public static final HashMap<String,String> pattern = new HashMap<String,String>();
+    public static final String _pattern_table=" pattern";
+    public static final String _patternID=" patternID";
+    public static final String _pattern_name=" pattern_name";
+    public static final String[] pattern_cols = {_patternID,_pattern_name};
+    static
+    {
+            pattern.put(_patternID," integer primary key autoincrement, ");
+            pattern.put(_pattern_name, " text not null");
     }
+//    //garment has patterns table
+//    public static final HashMap<String,String> garment_has_patterns = new HashMap<String,String>();
+//    public static final String _ghp_table="garment_has_patterns";
+//    public static final String _gpattern_num="gpattern_num";
+//    public static final String[] ghp_cols = {_gpattern_num,_patternID,_garmentID};
+//    static
+//    {
+//    garment_has_patterns.put(_gpattern_num, "integer primary key autoincrement");
+//    garment_has_patterns.put(_patternID, "integer not null");
+//    garment_has_patterns.put(_garmentID, "integer not null");
+//    garment_has_patterns.put("foreign key("+_garmentID+")", "references garment("+_garmentID+")");
+//    garment_has_patterns.put("foreign key("+_patternID+")", "references garment("+_patternID+")");
+//    }
+      //materials table
+      public static final HashMap<String,String> material = new HashMap<String,String>();
+      public static final String _material_table=" material";
+      public static final String _materialID=" materialID";
+      public static final String _material_name=" material_name";
+      public static final String[] material_cols = {_materialID,_material_name};
+      static
+      {
+          material.put(_materialID," integer primary key autoincrement, ");
+          material.put(_material_name," text not null");
+      }
 //    //Outfit table
 //    public static final HashMap<String,String> outfit = new HashMap<String,String>();
 //    public static final String _outfit_table="outfit";
@@ -120,54 +184,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 //    closet_has_garments.put("foreign key ("+_closetID+")","references closet("+_closetID+")");
 //    }
 //
-//    //color table
-//    public static final HashMap<String,String> color = new HashMap<String,String>();
-//    public static final String _color_table="color";
-//    public static final String _colorID="colorID";
-//    public static final String _color_name="color_name";
-//    public static final String[] color_cols = {_colorID,_color_name};
-//    static
-//    {
-//    color.put(_colorID, "integer primary key autoincrement");
-//    color.put(_color_name, "text not null");
-//    }
-//    //garment has colors table
-//    public static final HashMap<String,String> garment_has_colors = new HashMap<String,String>();
-//    public static final String _gcolor_num="gcolor_num";
-//    public static final String _ghc_table="garment_has_colors";
-//    public static final String[] ghc_cols = {_gcolor_num,_colorID,_garmentID};
-//    static
-//    {
-//    garment_has_colors.put(_gcolor_num, "integer primary key autoincrement");
-//    garment_has_colors.put(_colorID,"integer not null");
-//    garment_has_colors.put(_garmentID, "integer not null");
-//    garment_has_colors.put("foreign key("+_garmentID+")", "references garment("+_garmentID+")");
-//    garment_has_colors.put("foreign key("+_colorID+")", "references color("+_colorID+")");
-//    }
-//    //pattern
-//    public static final HashMap<String,String> pattern = new HashMap<String,String>();
-//    public static final String _pattern_table="pattern";
-//    public static final String _patternID="patternID";
-//    public static final String _pattern_name="pattern_name";
-//    public static final String[] pattern_cols = {_patternID,_pattern_name};
-//    static
-//    {
-//            pattern.put(_patternID,"integer primary key autoincrement");
-//            pattern.put(_pattern_name, "text not null");
-//    }
-//    //garment has patterns table
-//    public static final HashMap<String,String> garment_has_patterns = new HashMap<String,String>();
-//    public static final String _ghp_table="garment_has_patterns";
-//    public static final String _gpattern_num="gpattern_num";
-//    public static final String[] ghp_cols = {_gpattern_num,_patternID,_garmentID};
-//    static
-//    {
-//    garment_has_patterns.put(_gpattern_num, "integer primary key autoincrement");
-//    garment_has_patterns.put(_patternID, "integer not null");
-//    garment_has_patterns.put(_garmentID, "integer not null");
-//    garment_has_patterns.put("foreign key("+_garmentID+")", "references garment("+_garmentID+")");
-//    garment_has_patterns.put("foreign key("+_patternID+")", "references garment("+_patternID+")");
-//    }
+    
+    
 
 
 
@@ -191,8 +209,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         Log.d("UserDAO","Executing create table statement");
-            database.execSQL(createTableSQL(user,_user_table));
-            database.execSQL(createTableSQL(type,_type_table));
+            database.execSQL(createTableSQL(user.getTable(),user.getTableName()));
+            database.execSQL(createTableSQL(type.getTable(),type.getTableName()));
+            database.execSQL(createTableSQL(color.getTable(),color.getTableName()));
             //database.execSQL(createTableSQL(outfit,"outfit"));
             //database.execSQL(createTableSQL(closet,"closet"));
             // TODO Auto-generated method stub

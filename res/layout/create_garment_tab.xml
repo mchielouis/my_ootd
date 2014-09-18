@@ -1,41 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
     
-    <EditText
-        android:id="@+id/EditTextTypeTag"
-        android:hint="tag garment with types" 
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/TypeWrapper"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         >
-    </EditText>
-     <ootd.com.HorizontalListView
-        android:id="@+id/ListViewTypeTag"
-        android:layout_width="fill_parent"
+        <EditText
+            android:id="@+id/EditTextTypeTag"
+            android:hint="tag garment with types" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+        </EditText>
+         <ootd.com.HorizontalListView
+            android:id="@+id/ListViewTypeTag"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/EditTextTypeTag"            
+            >
+        </ootd.com.HorizontalListView> 
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/ColorWrapper"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/EditTextTypeTag"
+        android:layout_weight="1"
         >
-    </ootd.com.HorizontalListView> 
-    <EditText
-        android:id="@+id/EditTextColorTag"
-        android:hint="tag garments with colors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ListViewTypeTag"
-        >
-    </EditText>
-    <ootd.com.HorizontalListView
-        android:id="@+id/ListViewColorTag"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/EditTextColorTag"
-        >
-    </ootd.com.HorizontalListView> 
-    <EditText
+        <EditText
+            android:id="@+id/EditTextColorTag"
+            android:hint="tag garments with colors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+        </EditText>
+        <ootd.com.HorizontalListView
+            android:id="@+id/ListViewColorTag"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/EditTextColorTag"
+            >
+        </ootd.com.HorizontalListView>
+    </RelativeLayout> 
+    
+    <!-- EditText
         android:id="@+id/EditTextPatternTag"
         android:hint="tag garment with patterns"
         android:layout_width="wrap_content"
@@ -63,14 +80,5 @@
         android:layout_below="@+id/EditTextMaterialTag"
         >
     </ootd.com.HorizontalListView> 
-    
-    <GridView
-        android:id="@+id/GridViewTag"
-        android:numColumns="auto_fit"
-        android:columnWidth="80dp"
-        android:stretchMode="columnWidth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/EditTextTypeTag">
-    </GridView>   
- </RelativeLayout>
+    -->
+ </LinearLayout>

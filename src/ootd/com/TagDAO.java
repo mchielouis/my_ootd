@@ -26,22 +26,27 @@ public class TagDAO {
 //db objects
     private SQLiteDatabase database;
     private MySQLiteHelper dbhelper;
-    
-//constructor, calls static method getInstance of MySQLiteHelper
-//public UserDAO() {}
-    public TagDAO(Context context) {
-            dbhelper= MySQLiteHelper.getInstance(context);
+    public DOM dbmeta;
+//constructor, calls static method getInstance of MySQLiteHelper 
+//and sets database object metadata of the table the adapter will perform queries on
+    public TagDAO(Context context, DOM dom) {
+            this.dbhelper= MySQLiteHelper.getInstance(context);
+            this.dbmeta = dom;
     }
     
 //try to open db for writing
     public void open() throws SQLException {
-            database = dbhelper.getWritableDatabase();
+            this.database = dbhelper.getWritableDatabase();
     }
 //close db connection
     public void close() {
-            dbhelper.close();
+            this.dbhelper.close();
     }
-
+//reset the database object metadata 
+    public void setTagTable(DOM dom) {
+        this.dbmeta = dom;
+    }
+     
 //create a Tag from cursor elements
     public Tag createTag(Cursor cursor) {
         Tag tag = new Tag(cursor.getLong(0),cursor.getString(1));
@@ -54,7 +59,7 @@ public class TagDAO {
         //create wildcarded key
         String wildcarded_key = key + '%'; 
         //perform select
-        Cursor cursor = database.query(MySQLiteHelper._type_table, MySQLiteHelper.type_cols, MySQLiteHelper._type + " LIKE ?", new String[] {wildcarded_key}, null, null, null);
+        Cursor cursor = database.query(dbmeta.getTableName(), dbmeta.getCols(), dbmeta.getCols()[1] + " LIKE ?", new String[] {wildcarded_key}, null, null, null);
         //move cursor to first tuple
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -69,17 +74,18 @@ public class TagDAO {
     
     //currently hooked up to type table by default
     public Tag insertTag(String tag) {
+        
         long insertID;
-        Cursor existenceChecker = database.query(MySQLiteHelper._type_table, MySQLiteHelper.type_cols, MySQLiteHelper._type + "=?", new String[] {tag}, null, null, null);
+        Cursor existenceChecker = database.query(dbmeta.getTableName(), dbmeta.getCols(), dbmeta.getCols()[1] + "=?", new String[] {tag}, null, null, null);
         if (existenceChecker.getCount() == 0) {
             //put data values into contentValue class
             ContentValues con_val_pair = new ContentValues();
-            con_val_pair.put(MySQLiteHelper._type, tag);
+            con_val_pair.put(dbmeta.getCols()[1], tag);
             
             //call insert
             //move cursor to tag at insertID
-            insertID = database.insert(MySQLiteHelper._type_table, null, con_val_pair);
-            Cursor cursor = database.query(MySQLiteHelper._type_table, MySQLiteHelper.type_cols, MySQLiteHelper._typeID + "=" + insertID, null, null, null, null);
+            insertID = database.insert(dbmeta.getTableName(), null, con_val_pair);
+            Cursor cursor = database.query(dbmeta.getTableName(), dbmeta.getCols(), dbmeta.getCols()[0] + "=" + insertID, null, null, null, null);
             cursor.moveToFirst();
             Tag returntag = new Tag(cursor.getLong(0),cursor.getString(1));
             cursor.close();

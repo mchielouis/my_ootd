@@ -22,18 +22,21 @@ public class CreateGarmentTab extends Fragment {
 
     EditText editTextTypeTag, editTextColorTag, editTextPatternTag, editTextMaterialTag;
     HorizontalListView listViewTypeTag;
+    HorizontalListView listViewColorTag;
     GridView gridViewTag;
-    ArrayList<Tag> tags = new ArrayList<Tag>();
-    TagAdapter tagAdapter;
-    
+    ArrayList<Tag> typetags = new ArrayList<Tag>();
+    ArrayList<Tag> colortags = new ArrayList<Tag>();
+    TagAdapter typeTagAdapter;
+    TagAdapter colorTagAdapter;
   
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
             Bundle savedInstanceState) {
         View inflaterView = inflater.inflate(R.layout.create_garment_tab, container, false);
-        
          ///open db connection in usource
         Log.d("CreateGarmentTab.java","opening usource connection");
-        final TagDAO t_source = new TagDAO(this.getActivity());
+        
+        //creating DAOs and doing temporary inserts: type
+        final TagDAO t_source = new TagDAO(this.getActivity(),MySQLiteHelper.type);
         t_source.open();
         t_source.insertTag("skirt");
         t_source.insertTag("skort");
@@ -42,22 +45,36 @@ public class CreateGarmentTab extends Fragment {
         t_source.insertTag("sk-sk-sk-zip");
         t_source.insertTag("sklililidap");
         t_source.insertTag("skeedaddle");
+        //:color
+        final TagDAO c_source = new TagDAO(this.getActivity(), MySQLiteHelper.color);
+        c_source.open();
+        c_source.insertTag("lavender");
+        c_source.insertTag("peach");
+        c_source.insertTag("matcha");
+        
+        //inflating edittexts and listviews
         editTextTypeTag = (EditText) inflaterView.findViewById(R.id.EditTextTypeTag);
-        //editTextColorTag = (EditText) inflaterView.findViewById(R.id.EditTextColorTag);
+        editTextColorTag = (EditText) inflaterView.findViewById(R.id.EditTextColorTag);
         //editTextPatternTag = (EditText) inflaterView.findViewById(R.id.EditTextPatternTag);
         //editTextMaterialTag = (EditText) inflaterView.findViewById(R.id.EditTextMaterialTag);
         
         listViewTypeTag = (HorizontalListView) inflaterView.findViewById(R.id.ListViewTypeTag);
-        //gridViewTag = (GridView) inflaterView.findViewById(R.id.GridViewTag);
-        Log.d("CreateGarmentTab.java","listviewtag = " + listViewTypeTag); 
+        listViewColorTag = (HorizontalListView) inflaterView.findViewById(R.id.ListViewColorTag);
+        Log.d("CreateGarmentTab.java","listviewtypetag = " + listViewTypeTag); 
+        Log.d("CreateGarmentTab.java","listviewcolortag = " + listViewColorTag);
         
-        tagAdapter = new TagAdapter(this.getActivity(),tags);
+        //creating tagadapters
+        typeTagAdapter = new TagAdapter(this.getActivity(),typetags);
+        colorTagAdapter = new TagAdapter(this.getActivity(), colortags);
         //attach tagadapter to listview
-        Log.d("CreateGarmentTab.java", "tagadapter = "+ tagAdapter);
-        listViewTypeTag.setAdapter(tagAdapter);
-        //gridViewTag.setAdapter(tagAdapter);
+        Log.d("CreateGarmentTab.java", "typetagadapter = "+ typeTagAdapter);
+        listViewTypeTag.setAdapter(typeTagAdapter);
+        listViewColorTag.setAdapter(colorTagAdapter);
+        
         //attach textwatcher to edittext
-        editTextTypeTag.addTextChangedListener(new GarmentTabTextWatcher(editTextTypeTag, t_source));
+        editTextTypeTag.addTextChangedListener(new GarmentTabTextWatcher(editTextTypeTag, t_source, typetags));
+        editTextColorTag.addTextChangedListener(new GarmentTabTextWatcher(editTextColorTag, c_source, colortags));
+        
         
         return inflaterView;
     }
@@ -66,17 +83,17 @@ public class CreateGarmentTab extends Fragment {
     //saves view passed in with constructor
     //uses to identify which listview to populate with suggestions
     private class GarmentTabTextWatcher implements TextWatcher {
-        private View watchedView;
-        public TagDAO t_source;
-        private GarmentTabTextWatcher(View view, TagDAO t_source) {
+        private TextView watchedView;
+        public TagDAO tag_source;
+        private GarmentTabTextWatcher(TextView view, TagDAO tag_source, ArrayList<Tag> tags) {
             this.watchedView = view;
             //passing t_source, should consider implementing textwatcher in parent class
-            this.t_source = t_source;
+            this.tag_source = tag_source;
         }
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {  
             switch(watchedView.getId()) {
                 case R.id.EditTextTypeTag: 
-                    Log.d("CreateGarmentTab.java","before text chenged, view: "+ watchedView);
+                    //Log.d("CreateGarmentTab.java","before text chenged, view: "+ watchedView);
                     
             }
         }
@@ -84,7 +101,7 @@ public class CreateGarmentTab extends Fragment {
         public void onTextChanged(CharSequence s, int start, int before, int count) {
              switch(watchedView.getId()) {
                 case R.id.EditTextTypeTag: 
-                    Log.d("CreateGarmentTab.java","on text chenged, view: "+ watchedView);
+                    //Log.d("CreateGarmentTab.java","on text chenged, view: "+ watchedView);
                     
             }
         }
@@ -92,13 +109,24 @@ public class CreateGarmentTab extends Fragment {
         public void afterTextChanged(Editable s) {
             switch(watchedView.getId()) {
                 case R.id.EditTextTypeTag:
-                    Log.d("CreateGarmentTab.java","after text changed:"+ s.toString());
-                    tags = t_source.selectTagWhere(s.toString());
-        
-                    tagAdapter.update(tags);
-                    Log.d("CreateGarmentTab.java", "first tag selected: " + tags.get(0).getTag());
-       
-            }
+                    Log.d("CreateGarmentTab.java","type text changed:"+ s.toString());
+                    typetags = tag_source.selectTagWhere(s.toString());
+                    typeTagAdapter.update(typetags);
+                    //Log.d("CreateGarmentTab.java", "first type tag selected: " +typetags.get(0).getTag());
+                    //check if empty edit text
+                    break;
+                case R.id.EditTextColorTag:
+                    Log.d("CreateGarmentTab.java","color text changed:"+ s.toString());
+                    colortags = tag_source.selectTagWhere(s.toString());
+                    colorTagAdapter.update(colortags);
+                    //Log.d("CreateGarmentTag.java","first color tag selected: " +colortags.get(0).getTag());
+                    break;
+            }        
+            if (watchedView.getText().toString().trim().length() == 0) {
+                        typeTagAdapter.clear();
+                        colorTagAdapter.clear();
+                    }
+            
         }
     };
 }
