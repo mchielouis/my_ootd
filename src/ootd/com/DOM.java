@@ -1,5 +1,6 @@
 /*
-Database Object Metadata (DOM) manipulates all the strings associated with creating a new table in sqlite
+DOM (database object metadata) utility class for constructing sql statements for 
+creating tables in sqlite.
  */
 
 package ootd.com;
@@ -42,3 +43,4 @@ public class DOM {
         return _table_name;
     }
 }
+

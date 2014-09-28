@@ -50,6 +50,12 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         initView();
     }
     
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(getMeasuredWidth(),getMeasuredHeight());
+    }
+    
     private synchronized void initView() {
         mLeftViewIndex = -1;
         mRightViewIndex = 0;

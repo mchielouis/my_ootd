@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+SQLiteOpenHelper extension creates onboard database and creates tables using DOM class.
+
  */
 package ootd.com;
 import java.util.*;
@@ -38,33 +37,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             super(context,dbname,null,dbversion);
     }
 
-    /**********Table Definition: Hashmaps**********/
+    /**********Table Definition:**********/
 
     //user table 
     public static DOM user = new DOM(" user", " user_ID", " username");
-    /*public static final LinkedHashMap<String,String> user = new LinkedHashMap<String,String>();
-    public static final String _user_table=" user";
-    public static final String _userID=" userID";
-    public static final String _username=" username";
-    public static final String[] user_cols = {_userID,_username};
-    static
-    {
-            user.put(_userID, " integer primary key autoincrement,");
-            user.put(_username," text not null");         
-    }*/
+
     
     //type table
     public static DOM type = new DOM(" type", " type_ID", " type_name");
-    /*public static final LinkedHashMap<String,String> type = new LinkedHashMap<String,String>();
-    public static final String _type_table=" type";
-    public static final String _typeID=" typeID";
-    public static final String _type=" type";
-    public static final String[] type_cols = {_typeID,_type};
-    static
-    {
-        type.put(_typeID," integer primary key autoincrement,");
-        type.put(_type," text not null");
-    }*/
+
     
     //color table
     public static DOM color = new DOM(" color", " color_ID", " color_name");
@@ -93,7 +74,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 //    garment_has_colors.put("foreign key("+_colorID+")", "references color("+_colorID+")");
 //    }
     //pattern table
-    public static final HashMap<String,String> pattern = new HashMap<String,String>();
+    public static DOM pattern = new DOM(" pattern", " pattern_ID", " pattern_name");
+    
+    /*public static final HashMap<String,String> pattern = new HashMap<String,String>();
     public static final String _pattern_table=" pattern";
     public static final String _patternID=" patternID";
     public static final String _pattern_name=" pattern_name";
@@ -115,9 +98,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 //    garment_has_patterns.put(_garmentID, "integer not null");
 //    garment_has_patterns.put("foreign key("+_garmentID+")", "references garment("+_garmentID+")");
 //    garment_has_patterns.put("foreign key("+_patternID+")", "references garment("+_patternID+")");
-//    }
+//    }*/
+    
       //materials table
-      public static final HashMap<String,String> material = new HashMap<String,String>();
+      public static DOM material = new DOM(" material", " material_ID", " material_name");
+      /*public static final HashMap<String,String> material = new HashMap<String,String>();
       public static final String _material_table=" material";
       public static final String _materialID=" materialID";
       public static final String _material_name=" material_name";
@@ -126,7 +111,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
       {
           material.put(_materialID," integer primary key autoincrement, ");
           material.put(_material_name," text not null");
-      }
+      }*/
+      
 //    //Outfit table
 //    public static final HashMap<String,String> outfit = new HashMap<String,String>();
 //    public static final String _outfit_table="outfit";
@@ -212,6 +198,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             database.execSQL(createTableSQL(user.getTable(),user.getTableName()));
             database.execSQL(createTableSQL(type.getTable(),type.getTableName()));
             database.execSQL(createTableSQL(color.getTable(),color.getTableName()));
+            database.execSQL(createTableSQL(pattern.getTable(),pattern.getTableName()));
+            database.execSQL(createTableSQL(material.getTable(),material.getTableName()));
             //database.execSQL(createTableSQL(outfit,"outfit"));
             //database.execSQL(createTableSQL(closet,"closet"));
             // TODO Auto-generated method stub
