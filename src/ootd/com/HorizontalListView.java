@@ -8,7 +8,7 @@ package ootd.com;
 
 /**
  *
- * @author Phil
+ * @author Michelle
  */
 import java.util.LinkedList;
 import java.util.Queue;
@@ -48,6 +48,12 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
     public HorizontalListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
+    }
+    
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(getMeasuredWidth(),getMeasuredHeight());
     }
     
     private synchronized void initView() {

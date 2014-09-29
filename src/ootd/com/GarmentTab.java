@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+Fragment extension displays collection of garments for currently selected closet.
  */
 
 package ootd.com;
@@ -14,7 +12,7 @@ import android.widget.TextView;
 import android.app.Fragment;
 /**
  *
- * @author Phil
+ * @author Michelle
  */
 public class GarmentTab extends Fragment{
 

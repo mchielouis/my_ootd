@@ -1,12 +1,13 @@
 /*
-Database Object Metadata (DOM) manipulates all the strings associated with creating a new table in sqlite
+DOM (database object metadata) utility class for constructing sql statements for 
+creating tables in sqlite.
  */
 
 package ootd.com;
 import java.util.*;
 /**
  *
- * @author Phil
+ * @author Michelle
  */
 public class DOM {
     private LinkedHashMap<String,String> tableMetadata = new LinkedHashMap<String,String>();
@@ -42,3 +43,4 @@ public class DOM {
         return _table_name;
     }
 }
+

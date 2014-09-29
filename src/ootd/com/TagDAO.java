@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+TagDAO (Tag database access object) utiltiy class for retrieving and inserting string and
+integer information associated 
+
  */
 
 package ootd.com;
@@ -19,7 +19,7 @@ import android.database.sqlite.SQLiteCursor;
 import android.util.*;
 /**
  *
- * @author Phil
+ * @author Michelle
  */
 public class TagDAO {
 

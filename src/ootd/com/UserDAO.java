@@ -19,7 +19,7 @@ import android.database.sqlite.SQLiteCursor;
 import android.util.*;
 /**
  *
- * @author root
+ * @author Michelle
  */
 public class UserDAO {
 
