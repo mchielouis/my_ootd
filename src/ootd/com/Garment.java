@@ -6,8 +6,9 @@ package ootd.com;
 
 /**
  *
+
  * @author Michelle
- */
+*/
 public class Garment {
     
 }
