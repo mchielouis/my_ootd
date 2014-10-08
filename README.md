@@ -133,7 +133,8 @@ represents the pattern in the “garment_has_pattern” relationship
 - GarmentID (Foreign Key): integer  
 references Garment.GarmentID  
 
-Material  
+Material:
+--------
 This table is a collection of <materialid, materialname> pairs which represent an entry in a record of distinct materials.  
 - MaterialID (Primary Key): varchar(255) NOT NULL Auto_Increment  
 integer identification of distinct material  
