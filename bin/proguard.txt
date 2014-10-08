@@ -1,0 +1,9 @@
+# view AndroidManifest.xml #generated:10
+-keep class ootd.com.ClosetTab { <init>(...); }
+
+# view AndroidManifest.xml #generated:11
+-keep class ootd.com.MainTabActivity { <init>(...); }
+
+# onClick res/layout/user_tab.xml #generated:7
+-keepclassmembers class * { *** addUser(...); }
+
