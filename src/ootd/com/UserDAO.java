@@ -66,7 +66,7 @@ public class UserDAO {
             //create List to store users
             ArrayList<User> users = new ArrayList<User>();
             //perform select
-            Cursor cursor = database.query(MySQLiteHelper.user.getTableName(), MySQLiteHelper.user.getCols(),null,null,null,null,null,null);
+            Cursor cursor = database.query(MySQLiteHelper._user_table, MySQLiteHelper.user_cols,null,null,null,null,null,null);
             //move cursor to first tuple
             cursor.moveToFirst();
             //when cursor shifts
@@ -87,19 +87,19 @@ public class UserDAO {
 //insert User object data into "_user_table"	
     public User insertUser(String username) {
             long insertID;
-            Cursor existenceChecker = database.query(MySQLiteHelper.user.getTableName(), MySQLiteHelper.user.getCols(),MySQLiteHelper.user.getCols()[1] + "=?",new String[] {username},null,null,null,null); 
+            Cursor existenceChecker = database.query(MySQLiteHelper._user_table, MySQLiteHelper.user_cols,MySQLiteHelper.user_cols[1] + "=?",new String[] {username},null,null,null,null); 
             if (username.trim().length()==0) 
                 return null;
             else if (existenceChecker.getCount() == 0) {
                 //put data values into ContentValue class
                 ContentValues con_val_pair = new ContentValues();
-                con_val_pair.put(MySQLiteHelper.user.getCols()[1], username);
+                con_val_pair.put(MySQLiteHelper.user_cols[1], username);
 
                 //call insert
-                insertID = database.insert(MySQLiteHelper.user.getTableName(), null, con_val_pair);
+                insertID = database.insert(MySQLiteHelper._user_table, null, con_val_pair);
 
                 //move cursor to user at insertID (returned from database.insert) and return
-                Cursor cursor = database.query(MySQLiteHelper.user.getTableName(), MySQLiteHelper.user.getCols(), MySQLiteHelper.user.getCols()[0] + "=" + insertID, null, null, null, null, null);
+                Cursor cursor = database.query(MySQLiteHelper._user_table, MySQLiteHelper.user_cols, MySQLiteHelper.user_cols[0] + "=" + insertID, null, null, null, null, null);
                 cursor.moveToFirst();
                 User user = new User(cursor.getLong(0), cursor.getString(1));
                 cursor.close();

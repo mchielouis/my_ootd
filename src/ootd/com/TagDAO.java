@@ -26,12 +26,11 @@ public class TagDAO {
 //db objects
     private SQLiteDatabase database;
     private MySQLiteHelper dbhelper;
-    public DOM dbmeta;
+
 //constructor, calls static method getInstance of MySQLiteHelper 
 //and sets database object metadata of the table the adapter will perform queries on
-    public TagDAO(Context context, DOM dom) {
+    public TagDAO(Context context) {
             this.dbhelper= MySQLiteHelper.getInstance(context);
-            this.dbmeta = dom;
     }
     
 //try to open db for writing
@@ -41,10 +40,6 @@ public class TagDAO {
 //close db connection
     public void close() {
             this.dbhelper.close();
-    }
-//reset the database object metadata 
-    public void setTagTable(DOM dom) {
-        this.dbmeta = dom;
     }
      
 //create a Tag from cursor elements
@@ -59,7 +54,7 @@ public class TagDAO {
         //create wildcarded key
         String wildcarded_key = key + '%'; 
         //perform select
-        Cursor cursor = database.query(dbmeta.getTableName(), dbmeta.getCols(), dbmeta.getCols()[1] + " LIKE ?", new String[] {wildcarded_key}, null, null, null);
+        Cursor cursor = database.query(dbhelper._tag_table, dbhelper.tag_cols, dbhelper.tag_cols[1] + " LIKE ?", new String[] {wildcarded_key}, null, null, null);
         //move cursor to first tuple
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -73,19 +68,20 @@ public class TagDAO {
     }
     
     //currently hooked up to type table by default
-    public Tag insertTag(String tag) {
+    public Tag insertTag(String tag, String tagtype) {
         
         long insertID;
-        Cursor existenceChecker = database.query(dbmeta.getTableName(), dbmeta.getCols(), dbmeta.getCols()[1] + "=?", new String[] {tag}, null, null, null);
+        Cursor existenceChecker = database.query(dbhelper._tag_table, dbhelper.tag_cols, dbhelper.tag_cols[1] + "=?", new String[] {tag}, null, null, null);
         if (existenceChecker.getCount() == 0) {
             //put data values into contentValue class
             ContentValues con_val_pair = new ContentValues();
-            con_val_pair.put(dbmeta.getCols()[1], tag);
+            con_val_pair.put(dbhelper.tag_cols[1], tag);
+            con_val_pair.put(dbhelper.tag_cols[2], tagtype);
             
             //call insert
             //move cursor to tag at insertID
-            insertID = database.insert(dbmeta.getTableName(), null, con_val_pair);
-            Cursor cursor = database.query(dbmeta.getTableName(), dbmeta.getCols(), dbmeta.getCols()[0] + "=" + insertID, null, null, null, null);
+            insertID = database.insert(dbhelper._tag_table, null, con_val_pair);
+            Cursor cursor = database.query(dbhelper._tag_table, dbhelper.tag_cols, dbhelper.tag_cols[0] + "=" + insertID, null, null, null, null);
             cursor.moveToFirst();
             Tag returntag = new Tag(cursor.getLong(0),cursor.getString(1));
             cursor.close();

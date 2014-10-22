@@ -40,8 +40,46 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     /**********Table Definition:**********/
 
     //user table 
-    public static DOM user = new DOM(" user", " user_ID", " username");
-
+    public static final LinkedHashMap<String,String> user = new LinkedHashMap<String,String>();
+    public static final String _user_table=" user";
+    public static final String _user_ID=" user_ID";
+    public static final String _username=" user_name";
+    public static final String[] user_cols = {_user_ID,_username};
+    static
+    {
+        user.put(_user_ID, " integer primary key autoincrement,");
+        user.put(_username," text not null");         
+    }
+    //tag type table
+    public static final LinkedHashMap<String,String> tagtype = new LinkedHashMap<String,String>();
+    public static final String _tagtype_table=" tagtype";
+    public static final String _type_ID =" type_ID";
+    public static final String _type_name=" type_name";
+    public static final String[] tagtype_cols = {_type_name};
+    static
+    {
+        //tagtype.put(_type_ID, " integer primary key autoincrement,");
+        tagtype.put(_type_name, " text primary key");
+    }
+    
+    public static final LinkedHashMap<String,String> tag = new LinkedHashMap<String,String>();
+    public static final String _tag_table=" tag";
+    public static final String _tag_ID=" tag_ID";
+    public static final String _tag_name=" tag_name";
+    public static final String _tag_type=" tag_type";
+    public static final String[] tag_cols = {_tag_ID, _tag_name, _tag_type};
+    static
+    {
+        tag.put(_tag_ID, " integer primary key autoincrement,");
+        tag.put(_tag_name," text not null unique,");
+        tag.put(_tag_type, " text not null, ");
+        tag.put(" foreign key("+_tag_type+")"," references "+_tagtype_table+"("+_type_name+")");
+    }
+    //tag table
+    //public static DOM user = new DOM(" user", " user_ID", " username");
+    //public static DOM tag = new DOM(" tag"," tag_ID", " tag_name", " tag_type_ID", " tag_type");
+    //tag type table
+    public static DOM tag_type = new DOM(" tag_type"," tag_type_ID", " type_name");
     
     //type table
     public static DOM type = new DOM(" type", " type_ID", " type_name");
@@ -195,9 +233,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         Log.d("UserDAO","Executing create table statement");
-            database.execSQL(createTableSQL(user.getTable(),user.getTableName()));
-            database.execSQL(createTableSQL(type.getTable(),type.getTableName()));
-            database.execSQL(createTableSQL(color.getTable(),color.getTableName()));
+            database.execSQL(createTableSQL(user,_user_table));
+            database.execSQL(createTableSQL(tag,_tag_table));
+            database.execSQL(createTableSQL(tagtype,_tagtype_table));
             database.execSQL(createTableSQL(pattern.getTable(),pattern.getTableName()));
             database.execSQL(createTableSQL(material.getTable(),material.getTableName()));
             //database.execSQL(createTableSQL(outfit,"outfit"));

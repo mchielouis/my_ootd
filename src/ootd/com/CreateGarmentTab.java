@@ -39,7 +39,9 @@ public class CreateGarmentTab extends Fragment {
     static ArrayList<Tag> patterntags = new ArrayList<Tag>();
     static ArrayList<Tag> materialtags = new ArrayList<Tag>();
     static ArrayList<Tag> selectedtags = new ArrayList<Tag>();
-    static TagAdapter typeTagAdapter, colorTagAdapter, selectedTagAdapter;
+    static ArrayList<Tag> addedtags = new ArrayList<Tag>();
+    static TagAdapter typeTagAdapter, colorTagAdapter, selectedTagAdapter, addedTagAdapter;
+
     
   
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
@@ -49,37 +51,43 @@ public class CreateGarmentTab extends Fragment {
         Log.d("CreateGarmentTab.java","opening usource connection");
         
         //creating DAOs from DOMs in mysqlitehelper and doing temporary inserts: type
-        final TagDAO t_source = new TagDAO(this.getActivity(),MySQLiteHelper.type);
-        t_source.open();
-        t_source.insertTag("skirt");
-        t_source.insertTag("skort");
-        t_source.insertTag("skarf");
-        t_source.insertTag("sklirppppppp");
-        t_source.insertTag("sk-sk-sk-zip");
-        t_source.insertTag("sklililidap");
-        t_source.insertTag("skeedaddle");
+        
+        final TagTypeDAO type_source = new TagTypeDAO(this.getActivity());
+        type_source.open();
+        type_source.insertTag("type");
+        type_source.insertTag("color");
+        type_source.insertTag("pattern");
+        type_source.insertTag("material");
+        
+        final TagDAO tag_source = new TagDAO(this.getActivity());
+        tag_source.open();
+        tag_source.insertTag("skirt", "type");
+        tag_source.insertTag("red", "color");
+        tag_source.insertTag("polka dot", "pattern");
+        tag_source.insertTag("linen", "material");
         //:color
-        final TagDAO c_source = new TagDAO(this.getActivity(), MySQLiteHelper.color);
-        c_source.open();
-        c_source.insertTag("lavender");
-        c_source.insertTag("peach");
-        c_source.insertTag("matcha");
-        //:pattern
-        final TagDAO p_source = new TagDAO(this.getActivity(), MySQLiteHelper.pattern);
-        p_source.open();
-        p_source.insertTag("polka dot");
-        p_source.insertTag("perringbone");
-        //:material
-        final TagDAO m_source = new TagDAO(this.getActivity(), MySQLiteHelper.material);
-        m_source.open();
-        m_source.insertTag("nylon");
-        m_source.insertTag("silk");
+//        final TagDAO c_source = new TagDAO(this.getActivity(), MySQLiteHelper.color);
+//        c_source.open();
+//        c_source.insertTag("cream");
+//        c_source.insertTag("navy");
+//        c_source.insertTag("peach");
+//        //:pattern
+//        final TagDAO p_source = new TagDAO(this.getActivity(), MySQLiteHelper.pattern);
+//        p_source.open();
+//        p_source.insertTag("polka dot");
+//        p_source.insertTag("herringbone");
+//        //:material
+//        final TagDAO m_source = new TagDAO(this.getActivity(), MySQLiteHelper.material);
+//        m_source.open();
+//        m_source.insertTag("nylon");
+//        m_source.insertTag("corduroy");
+//        m_source.insertTag("linen");
         
         //inflating edittexts and listviews
         editTextTypeTag = (EditText) inflaterView.findViewById(R.id.EditTextTypeTag);
-        editTextColorTag = (EditText) inflaterView.findViewById(R.id.EditTextColorTag);
-        editTextPatternTag = (EditText) inflaterView.findViewById(R.id.EditTextPatternTag);
-        editTextMaterialTag = (EditText) inflaterView.findViewById(R.id.EditTextMaterialTag);
+        //editTextColorTag = (EditText) inflaterView.findViewById(R.id.EditTextColorTag);
+        //editTextPatternTag = (EditText) inflaterView.findViewById(R.id.EditTextPatternTag);
+        //editTextMaterialTag = (EditText) inflaterView.findViewById(R.id.EditTextMaterialTag);
         
         listViewTypeTag = (ListView) inflaterView.findViewById(R.id.ListViewTypeTag);
         Log.d("CreateGarmentTab.java","listviewtypetag = " + listViewTypeTag); 
@@ -87,6 +95,7 @@ public class CreateGarmentTab extends Fragment {
         //creating tagadapters
         typeTagAdapter = new TagAdapter(this.getActivity(),typetags);
         selectedTagAdapter = new TagAdapter(this.getActivity(), selectedtags);
+        addedTagAdapter = new TagAdapter(this.getActivity(), addedtags);
         
         //attach tagadapter to listview
         Log.d("CreateGarmentTab.java", "typetagadapter = "+ typeTagAdapter);
@@ -94,12 +103,20 @@ public class CreateGarmentTab extends Fragment {
         //listViewSelectedTag.setAdapter(selectedTagAdapter);
         
         //attach textwatcher to edittexts
-        editTextTypeTag.addTextChangedListener(new GarmentTabTextWatcher(editTextTypeTag, t_source, typetags));
-        editTextColorTag.addTextChangedListener(new GarmentTabTextWatcher(editTextColorTag, c_source, colortags));
-        editTextPatternTag.addTextChangedListener(new GarmentTabTextWatcher(editTextPatternTag, p_source, patterntags));
-        editTextMaterialTag.addTextChangedListener(new GarmentTabTextWatcher(editTextMaterialTag, m_source, materialtags));
+        editTextTypeTag.addTextChangedListener(new GarmentTabTextWatcher(editTextTypeTag, tag_source, typetags));
+        //editTextColorTag.addTextChangedListener(new GarmentTabTextWatcher(editTextColorTag, c_source, colortags));
+        //editTextPatternTag.addTextChangedListener(new GarmentTabTextWatcher(editTextPatternTag, p_source, patterntags));
+        //editTextMaterialTag.addTextChangedListener(new GarmentTabTextWatcher(editTextMaterialTag, m_source, materialtags));
         
         return inflaterView;
+    }
+    
+    public void clearEditTexts() {
+        editTextTypeTag.setText("");
+        //editTextColorTag.setText("");
+        //editTextMaterialTag.setText("");
+        //editTextPatternTag.setText("");
+        
     }
     
     //inner class tagadapter extends arrayadapter
@@ -110,18 +127,23 @@ public class CreateGarmentTab extends Fragment {
         private Context context;
         ArrayList<Tag> tags;
         Toast tagToast;
-        
+        TagDAO source;
         //constructor calls super arrayadapter class, intializes with tag list
         public TagAdapter(Context context, ArrayList<Tag> tags) {
             super(context, R.layout.tag_list_item, tags);
             this.context = context;
             this.tags = tags;
         }
-
+        
         public void setContext(Context context) {
             this.context = context;
         }
-
+        public void setSource(TagDAO source) {
+            this.source = source;
+        }
+        public TagDAO getSource() {
+            return source;
+        }
         public void setTags(ArrayList<Tag> newtags) {
             this.tags = newtags;
         }
@@ -191,9 +213,32 @@ public class CreateGarmentTab extends Fragment {
                         //updates tagadaptere
                         //Log.d("TagAdapter.java","updating adapter " + selectedTagAdapter + " with selectedtags "+ selectedtags);
                         selectedTagAdapter.update((ArrayList<Tag>)selectedtags.clone());
+                        clearEditTexts();
                         //Log.d("TagAdapter.java","selectedtags = "+selectedtags+" after update");
                         //Log.d("TagAdapter.java","tags in adapter = "+selectedTagAdapter.getTags());
-                    } else if (containsWhere(tag) && getThisAdapter() == selectedTagAdapter) {
+                    } 
+                    else if (!containsWhere(tag) && getThisAdapter() == addedTagAdapter) {
+                        //insert tag into database
+                        TagDAO tag_source = addedTagAdapter.getSource();
+                        tag_source.open();
+                        tag_source.insertTag(addedTagAdapter.getItem(0).getTag(),"type");
+                         selectedtags.add(tag);
+                        //Log.d("TagAdapter.java", "added tag= " + tag + " to " + selectedtags);
+                        //addedtags.add(tag);
+                        CharSequence tagged = (CharSequence) tag.getTag();
+
+                        //toast "tagged" at 100 in from top right
+                        tagToast = Toast.makeText(context, "Tagged " + tagged + ", tap to remove", Toast.LENGTH_SHORT);
+                        tagToast.setGravity(Gravity.TOP | Gravity.RIGHT, 100, 100);
+                        tagToast.show();
+
+                        //updates tagadaptere
+                        //Log.d("TagAdapter.java","updating adapter " + selectedTagAdapter + " with selectedtags "+ selectedtags);
+                        selectedTagAdapter.update((ArrayList<Tag>)selectedtags.clone());
+                        clearEditTexts();
+                        
+                    }
+                    else if (containsWhere(tag) && getThisAdapter() == selectedTagAdapter) {
                         //Log.d("TagAdapter.java", "clicked adapter= " + getThisAdapter());
                         //Log.d("TagAdapter.java", "does contain");
                         //remove
@@ -249,50 +294,72 @@ public class CreateGarmentTab extends Fragment {
                     //Log.d("CreateGarmentTab.java","type text changed:"+ s.toString());
                     typetags = tag_source.selectTagWhere(s.toString());
                     if (typetags.isEmpty()) {
+                        //if no tags in database match text entry, display new tag 
+                        Tag newtag = new Tag(0, s.toString());
+                        addedtags.clear();
+                        addedtags.add(newtag);
+                        addedTagAdapter.setSource(tag_source);
+                        listViewTypeTag.setAdapter(addedTagAdapter);
                         //if no tags in database match text entry, display already selected tags
-                        selectedTagAdapter.update((ArrayList<Tag>)selectedtags.clone());
-                        listViewTypeTag.setAdapter(selectedTagAdapter);
+                        //selectedTagAdapter.update((ArrayList<Tag>)selectedtags.clone());
+                        //listViewTypeTag.setAdapter(selectedTagAdapter);
                     }    
                     else {
                         //if tags in database match text entry, populate list with matches
                         typeTagAdapter.update(typetags);
                         listViewTypeTag.setAdapter(typeTagAdapter);
+                        //watchedView.setText("");
                     }
                     //Log.d("CreateGarmentTab.java", "first type tag selected: " +typetags.get(0).getTag());
                     break;
-                case R.id.EditTextColorTag:
-                    Log.d("CreateGarmentTab.java","color text changed:"+ s.toString());
-                    colortags = tag_source.selectTagWhere(s.toString());
-                    if (colortags.isEmpty()){
-                        selectedTagAdapter.update(selectedtags);
-                        listViewTypeTag.setAdapter(selectedTagAdapter);
-                    }
-                    else {
-                        typeTagAdapter.update(colortags);
-                        listViewTypeTag.setAdapter(typeTagAdapter);
-                    }
-                    break;
-                case R.id.EditTextPatternTag:
-                    patterntags = tag_source.selectTagWhere(s.toString());
-                    if (patterntags.isEmpty()){
-                        selectedTagAdapter.update(selectedtags);
-                        listViewTypeTag.setAdapter(selectedTagAdapter);
-                    }
-                    else {
-                        typeTagAdapter.update(patterntags);
-                        listViewTypeTag.setAdapter(typeTagAdapter);
-                    }
-                    break;
-                case R.id.EditTextMaterialTag:
-                    materialtags = tag_source.selectTagWhere(s.toString());
-                    if (materialtags.isEmpty()){
-                        selectedTagAdapter.update(selectedtags);
-                        listViewTypeTag.setAdapter(selectedTagAdapter);
-                    }
-                    else {
-                        typeTagAdapter.update(materialtags);
-                        listViewTypeTag.setAdapter(typeTagAdapter);
-                    }
+//                case R.id.EditTextColorTag:
+//                    Log.d("CreateGarmentTab.java","color text changed:"+ s.toString());
+//                    colortags = tag_source.selectTagWhere(s.toString());
+//                    if (colortags.isEmpty()){
+//                        Tag newtag = new Tag(0, s.toString());
+//                        addedtags.clear();
+//                        addedtags.add(newtag);
+//                        addedTagAdapter.setSource(tag_source);
+//                        listViewTypeTag.setAdapter(addedTagAdapter);
+//                        //selectedTagAdapter.update(selectedtags);
+//                        //listViewTypeTag.setAdapter(selectedTagAdapter);
+//                    }
+//                    else {
+//                        typeTagAdapter.update(colortags);
+//                        listViewTypeTag.setAdapter(typeTagAdapter);
+//                    }
+//                    break;
+//                case R.id.EditTextPatternTag:
+//                    patterntags = tag_source.selectTagWhere(s.toString());
+//                    if (patterntags.isEmpty()){
+//                        Tag newtag = new Tag(0, s.toString());
+//                        addedtags.clear();
+//                        addedtags.add(newtag);
+//                        addedTagAdapter.setSource(tag_source);
+//                        listViewTypeTag.setAdapter(addedTagAdapter);
+//                        //selectedTagAdapter.update(selectedtags);
+//                        //listViewTypeTag.setAdapter(selectedTagAdapter);
+//                    }
+//                    else {
+//                        typeTagAdapter.update(patterntags);
+//                        listViewTypeTag.setAdapter(typeTagAdapter);
+//                    }
+//                    break;
+//                case R.id.EditTextMaterialTag:
+//                    materialtags = tag_source.selectTagWhere(s.toString());
+//                    if (materialtags.isEmpty()){
+//                        Tag newtag = new Tag(0, s.toString());
+//                        addedtags.clear();
+//                        addedtags.add(newtag);
+//                        addedTagAdapter.setSource(tag_source);
+//                        listViewTypeTag.setAdapter(addedTagAdapter);
+//                        //selectedTagAdapter.update(selectedtags);
+//                        //listViewTypeTag.setAdapter(selectedTagAdapter);
+//                    }
+//                    else {
+//                        typeTagAdapter.update(materialtags);
+//                        listViewTypeTag.setAdapter(typeTagAdapter);
+//                    }
                     }
             
             if (watchedView.getText().toString().trim().length() == 0) {                    
