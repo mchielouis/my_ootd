@@ -74,32 +74,32 @@ represents the user selected placement option for this garment
 - Imagepath: varchar(255)  
 string path to image file chosen by user upon creation  
 
-Tag:
-----
-This table is a collection of <tagid,tagname,tagtype> tuples which represent an entry in a record of distinct tags.
--TagID (Primary Key): integer NOT NULL Auto_Increment
-integer identification of distinct tag
--Tagname: varchar(255) NOT NULL UNIQUE 
-string name of tag
--TagType (Foreign Key): varchar(255) NOT NULL 
-references TagType.typename
-represents type of tag
+Tag:  
+----  
+This table is a collection of <tagid,tagname,tagtype> tuples which represent an entry in a record of distinct tags.  
+-TagID (Primary Key): integer NOT NULL Auto_Increment  
+integer identification of distinct tag  
+-Tagname: varchar(255) NOT NULL UNIQUE   
+string name of tag  
+-TagType (Foreign Key): varchar(255) NOT NULL  
+references TagType.typename  
+represents type of tag  
 
-TagType:
--------
-This table is a collection of <typename> tuples which represent an entry in a record of distinct tagtypes.
--Typename (Primary Key): varchar(255) NOT NULL
-string name of tag type
+TagType:  
+-------  
+This table is a collection of <typename> tuples which represent an entry in a record of distinct tagtypes.  
+-Typename (Primary Key): varchar(255) NOT NULL  
+string name of tag type  
 
-Garment_has_Tag:
----------------
-This table is a collection of <tagnum, tagid, garmentid> tuples which represent an entry in a record of distinct tagid,garmentid pairs. The tagenum primary key allows a particular garment to associate with multiple tags.
--Tagnum (Primary Key): integer NOT NULL Auto_Increment
-integer identification of distinct tagid, garmentid pair
--TagID (Foriegn Key): integer
-references Tag.TagID
-represents tag in "garment_has_tag" relationship
--GarmentID (Foreign Key): Integer
-references Garment.GarmentID
-represents garment in "garment_has_tag" relationship
+Garment_has_Tag:  
+---------------  
+This table is a collection of <tagnum, tagid, garmentid> tuples which represent an entry in a record of distinct   tagid,garmentid pairs. The tagenum primary key allows a particular garment to associate with multiple tags.  
+-Tagnum (Primary Key): integer NOT NULL Auto_Increment  
+integer identification of distinct tagid, garmentid pair  
+-TagID (Foriegn Key): integer  
+references Tag.TagID  
+represents tag in "garment_has_tag" relationship  
+-GarmentID (Foreign Key): Integer  
+references Garment.GarmentID  
+represents garment in "garment_has_tag" relationship  
 
