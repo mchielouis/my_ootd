@@ -74,82 +74,32 @@ represents the user selected placement option for this garment
 - Imagepath: varchar(255)  
 string path to image file chosen by user upon creation  
 
-Type:
------
-This table is a collection of <typeid, typename> pairs which represent an entry in a record of distinct garmentypes.  
-- TypeID (Primary Key): integer NOT NULL Auto_Increment  
-integer identification of distinct garment type  
-- Typename: varchar(255)  
-string name of garment type  
+Tag:
+----
+This table is a collection of <tagid,tagname,tagtype> tuples which represent an entry in a record of distinct tags.
+-TagID (Primary Key): integer NOT NULL Auto_Increment
+integer identification of distinct tag
+-Tagname: varchar(255) NOT NULL UNIQUE 
+string name of tag
+-TagType (Foreign Key): varchar(255) NOT NULL 
+references TagType.typename
+represents type of tag
 
-Garment_has_Type:
------------------
-This table is a collection of <typenum, typeid, garmentid> pairs which represent an entry in a record of distinct typeid,garmentid pairs. The typenum primary key allows a particular garment to associate with multiple types.  
-- Type_num (Primary Key): integer NOT NULL Auto_Increment  
-integer identification of distinct typeid, garmentid pair  
-- TypeID (Foreign Key): integer  
-references Type.TypeID  
-represents type in the “garment_has_type” relationship  
-- GarmentId (Foreign Key): integer  
-references Garment.GarmentID  
-represents garment in “garment_has_type” relationship  
+TagType:
+-------
+This table is a collection of <typename> tuples which represent an entry in a record of distinct tagtypes.
+-Typename (Primary Key): varchar(255) NOT NULL
+string name of tag type
 
-Color:
-------
-This table is a collection of <colorid, colorname> pairs which represent an entry in a record of distinct colors.  
-- ColorID (Primary Key): varchar(255) NOT NULL Auto_Increment  
-integer identification of distinct color  
-- Color_name: varchar(255) NOT NULL  
-string identification of distinct color  
-
-Garment_has_Color:
-------------------
-This table is a collection of <colornum, colorid, garmentid> pairs which represent an entry in a record of distinct colorid,garmentid pairs.  The colornum primary key allows a particular garment to associate with multiple colors.  
-- Color_num (Primary Key): integer NOT NULL Auto_Increment  
-integer identification of distinct colorid, garmentid pair  
-- ColorID (Foreign Key): integer  
-references Color.ColorID  
-represents color in the “garment_has_color” relationship  
-- GarmentID (Foreign Key): integer  
-references Garment.GarmentID  
-represents garment in “garment_has_color” relationship  
-
-Pattern:
---------
-This table is a collection of <patternid, patternname> pairs which represent an entry in a record of distinct patterns.  
-- PatternID (Primary Key): varchar(255) NOT NULL Auto_Increment  
-integer identification of distinct pattern  
-- Pattern_name: varchar(255) NOT NULL  
-string identification of distinct pattern  
-
-Garment_has_Pattern:
--------------------
-This table is a collection of <patternum, patternid, garmentid> tuples which represent an entry in a record of distinct patternid, garmentid pairs. The patternum primary key allows a particular garment to associate with multiple patterns.  
-- Pattern_num (Primary Key): integer NOT NULL Auto_Increment  
-integer identification of distinct patternid, garmentid pair  
-- PatternID (Foreign Key): integer  
-references Pattern.PatternID  
-represents the pattern in the “garment_has_pattern” relationship  
-- GarmentID (Foreign Key): integer  
-references Garment.GarmentID  
-
-Material:
---------
-This table is a collection of <materialid, materialname> pairs which represent an entry in a record of distinct materials.  
-- MaterialID (Primary Key): varchar(255) NOT NULL Auto_Increment  
-integer identification of distinct material  
-- Material_name: varchar(255) NOT NULL  
-string indentification of distinct material  
-
-Garment_has_Material:
---------------------
-This table is a collection of <materialnum,materialid, garmentid> tuples which represent an entry in a record of distinct materialid, garmentid pairs. The materialnum primary key allows a particular garment to associate with multiple materials.  
-- Material_num (Primary Key): integer NOT NULL Auto_Increment  
-integer identification of distinct materialid, garmentid pair  
-- MaterialID (Foreign Key): integer  
-references Material.Material  
-represents the material in the “garment_has_material” relationship  
-- GarmentID (Foreign Key): integer  
-references Garment.GarmentID  
-represents the garment in the “garment_has_material” relationship  
+Garment_has_Tag:
+---------------
+This table is a collection of <tagnum, tagid, garmentid> tuples which represent an entry in a record of distinct tagid,garmentid pairs. The tagenum primary key allows a particular garment to associate with multiple tags.
+-Tagnum (Primary Key): integer NOT NULL Auto_Increment
+integer identification of distinct tagid, garmentid pair
+-TagID (Foriegn Key): integer
+references Tag.TagID
+represents tag in "garment_has_tag" relationship
+-GarmentID (Foreign Key): Integer
+references Garment.GarmentID
+represents garment in "garment_has_tag" relationship
 
