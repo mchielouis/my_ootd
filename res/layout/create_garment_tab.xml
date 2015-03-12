@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+   
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
+        android:orientation="vertical"
 
         >
+        
         <!--
         <RelativeLayout
             android:id="@+id/SelectedWrapper"
@@ -23,31 +24,33 @@
             </ootd.com.HorizontalListView> 
         </RelativeLayout>
         -->
-    <ScrollView 
     
-    android:layout_height="match_parent"
-    android:layout_width="0dp"
-    android:layout_weight="1"
-    >
         
         <LinearLayout
-            android:id="@+id/TypeWrapper"
+            android:id="@+id/WrapperEditText"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             
             >
+            <Button
+                android:id="@+id/ButtonAddImg"
+                android:text="Add Image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+            </Button>
             <EditText
                 android:id="@+id/EditTextTypeTag"
-                android:hint="tag garment with types" 
+                android:hint="search tags" 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 >
             </EditText>
-            <EditText
+            <!--EditText
                 android:id="@+id/EditTextColorTag"
-                android:hint="tag garment with colors"
+                android:hint="cream, navy, peach etc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -55,28 +58,32 @@
             </EditText>
             <EditText
                 android:id="@+id/EditTextPatternTag"
-                android:hint="tag garment with patterns"
+                android:hint="polkadot, herringbone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
             >
             </EditText>
             <EditText
                 android:id="@+id/EditTextMaterialTag"
-                android:hint="tag garment with materials"
+                android:hint="nylon, corduroy, linen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
             >
-        </EditText>     
+        </EditText-->     
         </LinearLayout>
-    </ScrollView>
+    
     
         <LinearLayout
-            android:id="@+id/ColorWrapper"
-            android:layout_width="0dp"
+            android:id="@+id/WrapperListView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             >
-
+            <!--ImageView
+                android:id="@+id/ImageViewGarment"
+                android:
+                android:layout_width="match_parent"
+                >
+            </ImageView-->
             <ListView
                 android:id="@+id/ListViewTypeTag"
                 android:layout_width="match_parent"
@@ -85,5 +92,7 @@
                 android:dividerHeight="0dp"            
                 >
             </ListView>        
-        </LinearLayout> 
+        </LinearLayout>
+        
      </LinearLayout>
+ 
